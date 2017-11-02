@@ -12,6 +12,9 @@ class Comment < ActiveRecord::Base
   end
 
   def self.total_word_count
-    all.inject(0) {|total, a| total += a.word_count }
+    #all.inject(0) {|total, a| total += a.word_count }
+    Rails.cache.fetch(:total_comment_word_count) do
+    pluck(:body).join(" ").split.count
+    end
   end
 end
